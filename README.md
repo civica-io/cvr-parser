@@ -1,7 +1,7 @@
 # cvr-parser
 App to parse and transform Cast Vote Record files.
 
-## Requirements:
+## Requirements
 - Python 3
 - pandas
 - click
