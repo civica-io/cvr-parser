@@ -13,3 +13,20 @@ Install platform-specific pdftotext library dependencies according to [pdftotext
 pip3 install pdftotext
 pip3 install pandas click
 ```
+
+## Usage
+Parse one or many input files into one output file.
+
+```
+cvr-parser.py [OPTIONS] INPUT_FILES... OUTPUT_FILE
+Options:
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+```
+
+## Examples
+```
+cvr-parser.py INPUT_FILE OUTPUT_FILE
+cvr-parser.py INPUT_FILE1 INPUT_FILE2 INPUT_FILE3 OUTPUT_FILE
+```
+
