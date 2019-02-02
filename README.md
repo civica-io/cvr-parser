@@ -15,7 +15,7 @@ pip3 install pandas click
 ```
 
 ## Usage
-Parse one or many input pdf's into one output csv.
+Parse one or many input PDFs into one output CSV.
 
 ```bash
 cvr-parser.py [OPTIONS] INPUT_FILES... OUTPUT_FILE
