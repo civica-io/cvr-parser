@@ -9,7 +9,7 @@ App to parse and transform Cast Vote Record files.
 
 ## Installation
 Install platform-specific pdftotext library dependencies according to [pdftotext docs](https://pypi.org/project/pdftotext/)
-```
+```bash
 pip3 install pdftotext
 pip3 install pandas click
 ```
@@ -17,7 +17,7 @@ pip3 install pandas click
 ## Usage
 Parse one or many input files into one output file.
 
-```
+```bash
 cvr-parser.py [OPTIONS] INPUT_FILES... OUTPUT_FILE
 Options:
   --version  Show the version and exit.
@@ -25,7 +25,7 @@ Options:
 ```
 
 ## Examples
-```
+```bash
 cvr-parser.py INPUT_FILE OUTPUT_FILE
 cvr-parser.py INPUT_FILE1 INPUT_FILE2 INPUT_FILE3 OUTPUT_FILE
 ```
