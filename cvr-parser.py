@@ -7,6 +7,10 @@ import re
 import itertools
 import pdftotext
 import click
+import os
+
+# Set encoding to be sure we're using UTF-8 and not ascii. Note this is the proper encoding for US only.
+os.environ["LC_ALL"] = "en_US.utf-8"
 
 @click.command()
 @click.version_option('1.0')
@@ -39,7 +43,7 @@ def parse_pdf(input_files, output_file):
                 # This is the part of the whole line where it is possible that the next column could start
                 col2_line_target = line[30:]
                 # Searching through the right (target) half of the line for delimiters that mark second column start
-                split_dict = re.split('(\[ \]|\[X\]|Vote For|\d+ - )', col2_line_target)
+                split_dict = re.split('(\[ \]|\[X\]|Vote For|UNDERVOTE|\d+ - )', col2_line_target)
                 col2_row = ''
                 # Sometimes we only have one column. In that case we move on, but if split_dict>1, we know there are two.
                 if len(split_dict)>1:
@@ -82,7 +86,7 @@ def parse_pdf(input_files, output_file):
                 # Handles the case where there is no option_chosen
                 option_chosen = ''
                 for option in contest_body:
-                    if '[X]' in option:
+                    if '[X]' in option or 'UNDERVOTE' in option:
                         option_chosen = option.replace('[X]', '').strip()
                 # Creating a list of contest results and appending it to a list of all contests on page which easily converts to dataframe
                 contest_result = [
@@ -109,21 +113,22 @@ def parse_pdf(input_files, output_file):
         # Combine all page dataframes into one huge document dataframe, transpose
         df_page = pd.concat(page_dataframes, axis=1).T
 
-        # Removing header columns so subsequent columns can be sorted by their beginning numbers
-        cols = [column for column in df_page.columns if 'Header' not in column]
-        sorted_cols = sorted(cols, key=lambda x: int(re.sub("\D", "", x.split(' - ')[0])))
-
-        # Add the header columns back to the beginning of the column list
-        sorted_cols = ['HeaderLine1', 'HeaderLine2'] + sorted_cols
-
-        # Applying column list to the dataframe
-        df_page = df_page[sorted_cols]
-
         # Append file dataframe to list of all file dataframes
         file_dataframes.append(df_page)
 
     # Combine all file dataframes into a big dataframe
     df_files = pd.concat(file_dataframes)
+    
+    # Removing header columns so subsequent columns can be sorted by their beginning numbers
+    cols = [column for column in df_files.columns if 'Header' not in column]
+    sorted_cols = sorted(cols, key=lambda x: int(re.sub("\D", "", x.split(' - ')[0])))
+
+    # Add the header columns back to the beginning of the column list
+    sorted_cols = ['HeaderLine1', 'HeaderLine2'] + sorted_cols
+
+    # Applying column list to the dataframe
+    df_files = df_files[sorted_cols]
+
     # Generate output_file csv without default numbered index column
     df_files.to_csv(output_file, index=False)
     input_file_count = len(input_files)
