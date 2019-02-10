@@ -22,6 +22,8 @@ def parse_pdf(input_files, output_file):
     Examples:
         python3 cvr-parser.py INPUT_FILE OUTPUT_FILE
         python3 cvr-parser.py INPUT_FILE1 INPUT_FILE2 INPUT_FILE3 OUTPUT_FILE
+        python3 cvr-parser.py *.pdf OUTPUT_FILE
+        python3 cvr-parser.py /BallotPDF/2016*.pdf OUTPUT_FILE
     """
 
     # Every file returns a dataframe and stores it in this list
